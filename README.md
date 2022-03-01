@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+# Note Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Built using React, Python@3.10, Bootstrap, Postgres, Django, Node, and Docker.
 
-## Available Scripts
+## Requirements
 
-In the project directory, you can run:
+- [Docker](https://www.docker.com/get-started)
+- [Node](https://nodejs.org)
+- [Python](https://www.python.org/downloads/)
+- [React](https://reactjs.org/versions/)
 
-### `npm start`
+## Dev
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Setting Up Your Local Dev Environment.
+1. Clone and cd into TodoApp3
+2. Create a file named `.env` and fill in the following variables:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```
+DEBUG=1
+REGION=massachusetts
+DJANGO_SUPERUSER_USERNAME=user1
+DJANGO_SUPERUSER_PASSWORD=20Yearly22
+DJANGO_SUPERUSER_EMAIL=user1@codepython.org
+DJANGO_SECRET_KEY=fix_this_later
 
-### `npm test`
+POSTGRES_READY=0
+POSTGRES_DB=dockerdc
+POSTGRES_PASSWORD=mysecretpassword
+POSTGRES_USER=myuser
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5435
+```
+2. Install [Node](https://nodejs.org) if you do not already have it.
+3. Install [Yarn](https://yarnpkg.com/getting-started/install) if you do not already have it.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Running The app.
 
-### `npm run build`
+The app can be ran using Docker. We are currently running it using a
+docker-compose service.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Once you have the above `.env` file, navigate to your project root (right where `docker-compose.yaml` is) and run:
+```
+docker compose up -d
+```
+This will create a `postgresql` database that's running in the container. Visit [`http://localhost:8000/`](http://localhost:8000/)
+in your browser to see the app and start using/developing.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Next you need to make migrations and migrate them to the database. To do
+this, you need to first get in your docker container.
+  - Run `docker ps` to list all the containers and their info.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. When in your docker container, run the following commands. If you are on windows,use `python manage.py <command>` instad of `./manage.py`. For the migrations on windows, you may need to do list all apps explicitly.
+    - Run `./manage.py makemigrations` on mac to make all the migrations.
+    - If you get a message output of 'no changes detected' that is fine and you can just run the next command.
+    - Run `./manage migrate` to migrate the changes.
+    - More on django migrations and migrate [here](https://docs.djangoproject.com/en/1.11/topics/migrations/).
+    - Whenever you make a change to your models, please repeat steps 2 and 3.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+4. To bring this database down just run:
+```
+docker compose down
+```
